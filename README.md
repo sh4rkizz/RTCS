@@ -1,2 +1,2 @@
 # RTCS
-repository for the coursework  
+Coursework repository  
