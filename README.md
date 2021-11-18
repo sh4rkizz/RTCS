@@ -1,2 +1,2 @@
-# RTCS
+# RTS
 Coursework repository  
