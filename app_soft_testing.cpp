@@ -27,7 +27,7 @@ int main() {
     // Заполнение тестовых массивов
     for (int i = 0; i < TEST_SIZE; ++i) {
         test_array[i] = dist(mt);
-        ans_array[i] = test_array[i] % 7 == 0 ? NULL : test_array[i] % 10;
+        ans_array[i] = test_array[i] % 7 == 0 ? NULL : test_array[i] % 3;
     }
 
     // Создание временной переменной для симуляции поломки системы
@@ -47,7 +47,7 @@ int main() {
         if (i % 1000 == 0 && i != 0) {
             // Функция установки консоли в иной цвет
             SetConsoleTextAttribute(hConsole, failed_on_100 + 11);
-            cout << " " << report[failed_on_100] << endl;
+            cout << " " << report[failed_on_1000] << endl;
             failed_on_100 = false;
         }
         if ((answer = test_func(test_array[i],
@@ -79,9 +79,9 @@ int main() {
 int test_func(int var, float break_time) {
     if ((int) break_time % 2 != 0) {
         // Симуляция ошибочного поведения системы
-        return dist(mt) % 10;
+        return dist(mt) % 3;
     } else {
         // Ожидаемый ответ системы на входной агрумент 'var'
-        return var % 7 == 0 ? NULL : var % 10;
+        return var % 7 == 0 ? NULL : var % 3;
     }
 }
