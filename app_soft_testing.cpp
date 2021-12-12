@@ -1,9 +1,15 @@
 #include <windows.h>
 #include <iostream>
+#include <vector>
 #include <random>
 #include <ctime>
 
 using namespace std;
+
+// Создание глобального генератора случайных чисел
+random_device generator;
+mt19937 mt(generator());
+uniform_int_distribution<int> dist(0, 50);
 
 int test_func(int var, float break_time);
 
@@ -11,10 +17,8 @@ int main() {
     // Указание количества тестов
     const int TEST_SIZE = 15000;
 
-    // Создание генератора случайных чисел
-    random_device generator;
-    mt19937 mt(generator());
-    uniform_int_distribution<int> dist(0, 50);
+    // Создание вектора для записи ошибочных тестов
+    vector<int> failed_inputs;
 
     // Создание масивов для записи тестов и ответов к этим тестам
     int test_array[TEST_SIZE];
@@ -32,6 +36,7 @@ int main() {
     // Создание сообщений о симуляции и переменной для их вывода
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     bool failed_on_100 = false;
+    int answer;
     string report[2] = {
             "TEST PASSED",
             "TEST FAILED"
@@ -45,9 +50,27 @@ int main() {
             cout << " " << report[failed_on_100] << endl;
             failed_on_100 = false;
         }
-        if (test_func(test_array[i],
-                      clock() - it_will_break_each_2_seconds) != ans_array[i]) {
+        if ((answer = test_func(test_array[i],
+                                clock() - it_will_break_each_2_seconds)) != ans_array[i]) {
+            failed_inputs.push_back(i);
+            failed_inputs.push_back(answer);
+            failed_inputs.push_back(ans_array[i]);
             failed_on_100 = true;
+        }
+    }
+
+    // Установка цвета для итогового отчета
+    SetConsoleTextAttribute(hConsole, 15);
+
+    // Вывод полученных в ходе тестирования ошибок
+    if (failed_inputs.empty()) {
+        cout << "EVERYTHING IS FINE";
+    } else {
+        cout << "SOME OF THE TESTS FAILED:" << endl;
+        for (int i = 0; i < failed_inputs.size(); i += 3) {
+            cout << "TEST #" << failed_inputs[i] <<
+                 " GOT: " << failed_inputs[i + 1] <<
+                 " EXPECTED: " << failed_inputs[i + 2] << endl;
         }
     }
 }
@@ -56,7 +79,7 @@ int main() {
 int test_func(int var, float break_time) {
     if ((int) break_time % 2 != 0) {
         // Симуляция ошибочного поведения системы
-        return NULL;
+        return dist(mt) % 10;
     } else {
         // Ожидаемый ответ системы на входной агрумент 'var'
         return var % 7 == 0 ? NULL : var % 10;
