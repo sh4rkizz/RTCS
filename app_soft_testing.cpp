@@ -35,7 +35,7 @@ int main() {
 
     // Создание сообщений о симуляции и переменной для их вывода
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    bool failed_on_100 = false;
+    bool failed_on_1000 = false;
     int answer;
     string report[2] = {
             "TEST PASSED",
