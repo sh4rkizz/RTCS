@@ -46,16 +46,16 @@ int main() {
     for (int i = 0; i < TEST_SIZE; ++i) {
         if (i % 1000 == 0 && i != 0) {
             // Функция установки консоли в иной цвет
-            SetConsoleTextAttribute(hConsole, failed_on_100 + 11);
+            SetConsoleTextAttribute(hConsole, failed_on_1000 + 11);
             cout << " " << report[failed_on_1000] << endl;
-            failed_on_100 = false;
+            failed_on_1000 = false;
         }
         if ((answer = test_func(test_array[i],
                                 clock() - it_will_break_each_2_seconds)) != ans_array[i]) {
             failed_inputs.push_back(i);
             failed_inputs.push_back(answer);
             failed_inputs.push_back(ans_array[i]);
-            failed_on_100 = true;
+            failed_on_1000 = true;
         }
     }
 
